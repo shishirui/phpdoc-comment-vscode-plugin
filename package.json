@@ -10,15 +10,21 @@
     "categories": [
         "Other"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/shishirui/phpdoc-comment-vscode-plugin"
+    },
     "activationEvents": [
         "onCommand:extension.sayHello"
     ],
     "main": "./extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Add PHPDoc Comment"
-        }]
+        "commands": [
+            {
+                "command": "extension.sayHello",
+                "title": "Add PHPDoc Comment"
+            }
+        ]
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
