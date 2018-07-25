@@ -4,6 +4,7 @@
     "description": "Add phpdoc @param and @return tag for selected function signatures.",
     "version": "1.0.0",
     "publisher": "rexshi",
+    "icon": "images/logo.png",
     "engines": {
         "vscode": "^1.25.0"
     },
@@ -15,13 +16,13 @@
         "url": "https://github.com/shishirui/phpdoc-comment-vscode-plugin"
     },
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.addComment"
     ],
     "main": "./extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
+                "command": "extension.addComment",
                 "title": "Add PHPDoc Comment"
             }
         ]

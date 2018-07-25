@@ -4,14 +4,12 @@ var indentString = require('indent-string');
 
 function activate(context) {
 
-    let disposable = vscode.commands.registerCommand('extension.sayHello', function () {
+    let disposable = vscode.commands.registerCommand('extension.addComment', function () {
         var lang = vscode.window.activeTextEditor.document.languageId;
 
         if (lang == "php") {
             var selection = vscode.window.activeTextEditor.selection;
             var startLine = selection.start.line - 1;
-            console.log(selection);
-            console.log(startLine);
             var selectedText = vscode.window.activeTextEditor.document.getText(selection);
             var outputMessage = 'Please select a PHP function signature';
 
