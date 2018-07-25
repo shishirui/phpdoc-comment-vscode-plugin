@@ -9,15 +9,22 @@ var paramDeclaration = (function () {
 })();
 exports.paramDeclaration = paramDeclaration;
 
-function getParameterText(paramList, returnText) {
+function getFunctionName(text) {
+    var matches = /function\s+([\w_-]+)/.exec(text);
+    var functionName = matches[1];
+
+    return functionName;
+}
+exports.getFunctionName = getFunctionName;
+
+function getParameterText(paramList, returnText, functionName) {
     var textToInsert = "";
-    textToInsert = textToInsert + '/**\n *';
+    textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
+
     paramList.forEach(function (element) {
         if (element.paramName != '') {
             textToInsert = textToInsert + ' @param  ';
-            //if (element.paramType != '') {
             textToInsert = textToInsert + '' + element.paramType + '' + ' ';
-            //}
             textToInsert = textToInsert + element.paramName + '\n' + ' *';
         }
     });
@@ -78,84 +85,21 @@ function stripComments(text) {
 }
 exports.stripComments = stripComments;
 
-//Assumes that the string passed in starts with ( and continues to ) and does not contain any comments or white space
 function getParameters(text) {
     var paramList = [];
-    //Start by looking for the function name declaration
-    var index = 0;
     text = text.replace(/\s/g, '');
-    //Now we are at the first non whitespace character
-    //if it is not a '(' then this is not a valid function declaration
-    if (text.charAt(index) == '(') {
-        //count the number of matching opening and closing braces. Keep parsing until 0
-        var numBraces = 1;
-        index++;
-        while ((numBraces != 0) && (index != text.length)) {
-            //Now we are at a non whitespace character. Assume it is the parameter name
-            var name = '';
-            while ((text.charAt(index) != ':') && (text.charAt(index) != ',') && (text.charAt(index) != ')') && (index < text.length)) {
-                name = name + text.charAt(index);
-                index++;
-            }
-            if (index < text.length) {
-                //Now we are at a : or a ',', skip then read until a , to get the param type
-                var type = '';
-                if (text.charAt(index) == ':') {
-                    index++;
-                    //we have a type to process
-                    if (text.charAt(index) == '(') {
-                        var startNumBraces = numBraces;
-                        numBraces++;
-                        type = type + text.charAt(index);
-                        index++;
-                        //we have encountered a function type
-                        //read all the way through until the numBraces = startNumBraces
-                        while ((numBraces != startNumBraces) && (index < text.length)) {
-                            if (text.charAt(index) == ')') {
-                                numBraces--;
-                            }
-                            else if (text.charAt(index) == '(') {
-                                numBraces++;
-                            }
-                            type = type + text.charAt(index);
-                            index++;
-                        }
-                        if (index < text.length) {
-                            //Now read up to either a , or a )
-                            while ((text.charAt(index) != ',') && (text.charAt(index) != ')')) {
-                                type = type + text.charAt(index);
-                                index++;
-                            }
-                            if (text.charAt(index) == ')') {
-                                numBraces--;
-                            }
-                        }
-                    }
-                    else {
-                        while ((text.charAt(index) != ',') && (text.charAt(index) != ')') && (index != text.length)) {
-                            type = type + text.charAt(index);
-                            index++;
-                        }
-                        if (text.charAt(index) == ')') {
-                            numBraces--;
-                        }
-                    }
-                }
-                else {
-                    //no type is specified
-                    type = 'mixed';
-                }
+
+    if (text.charAt(0) == '(') {            
+        var keys = text.match(/\$[\w_-]+/g);
+        for (const key in keys) {
+            if (keys.hasOwnProperty(key)) {
+                const name = keys[key];
+                var type = "mixed";
                 paramList.push(new paramDeclaration(name, type));
-                if (index < text.length) {
-                    index++;
-                }
             }
         }
     }
     return paramList;
 }
+
 exports.getParameters = getParameters;
-
-exports.functionParser = null;
-
-//# sourceMappingURL=functionParser.js.map

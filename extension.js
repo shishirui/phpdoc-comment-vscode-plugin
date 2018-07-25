@@ -3,7 +3,6 @@ var functionParser = require('./src/functionParser');
 var indentString = require('indent-string');
 
 function activate(context) {
-
     let disposable = vscode.commands.registerCommand('extension.addComment', function () {
         var lang = vscode.window.activeTextEditor.document.languageId;
 
@@ -22,24 +21,23 @@ function activate(context) {
                 return;
             }
 
+            var fullLine = selectedText;
             var firstBraceIndex = selectedText.indexOf('(');
             selectedText = selectedText.slice(firstBraceIndex);
             selectedText = functionParser.stripComments(selectedText);
             var returnText = functionParser.getReturns(selectedText);
             var params = functionParser.getParameters(selectedText);
+            var functionName = functionParser.getFunctionName(fullLine);
 
             if (params.length > 0) {
-                var textToInsert = functionParser.getParameterText(params, returnText);
+                var textToInsert = functionParser.getParameterText(params, returnText, functionName);
                 
                 vscode.window.activeTextEditor.edit(function (editBuilder) {
                     if (startLine < 0) {
-                        //If the function declaration is on the first line in the editor we need to set startLine to first line
-                        //and then add an extra newline at the end of the text to insert
                         startLine = 0;
                         textToInsert = textToInsert + '\n';
                     }
 
-                    //Check if there is any text on startLine. If there is, add a new line at the end
                     var lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
                     var pos;
                     if ((lastCharIndex > 0) && (startLine != 0)) {
@@ -52,8 +50,6 @@ function activate(context) {
 
                     var line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
                     var firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;
-                    var numIndent = 0;
-                    var tabSize = vscode.window.activeTextEditor.options.tabSize;
                     var stringToIndent = '';
                     for (var i = 0; i < firstNonWhiteSpace; i++) {
                         if (line.charAt(i) == '\t') {
