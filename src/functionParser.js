@@ -29,13 +29,16 @@ function getParameterText(paramList, returnText, functionName) {
         }
     });
 
+    if (paramList.length > 0) {
+        textToInsert = textToInsert + '\n *';
+    }
+
     if (returnText == '') {
         returnText = 'void';
     }
 
-    textToInsert = textToInsert + '\n * @return ' + returnText + '\n' + ' *';
+    textToInsert = textToInsert + ' @return ' + returnText + '\n' + ' */';
 
-    textToInsert = textToInsert + '/';
     return textToInsert;
 }
 exports.getParameterText = getParameterText;

@@ -12,16 +12,10 @@ function activate(context) {
             var selectedText = vscode.window.activeTextEditor.document.lineAt(startLine).text;
             var outputMessage = 'Please select a PHP function signature';
 
-            if (selectedText.length === 0) {
+            if (/function\s+([\w_-]+)/.exec(selectedText) == null) {
                 vscode.window.showInformationMessage(outputMessage);
                 return;
             }
-            if (functionParser.stripComments(selectedText).length === 0) {
-                vscode.window.showInformationMessage(outputMessage);
-                return;
-            }
-
-            startLine --;
 
             var fullLine = selectedText;
             var firstBraceIndex = selectedText.indexOf('(');
@@ -30,42 +24,40 @@ function activate(context) {
             var returnText = functionParser.getReturns(selectedText);
             var params = functionParser.getParameters(selectedText);
             var functionName = functionParser.getFunctionName(fullLine);
+            var textToInsert = functionParser.getParameterText(params, returnText, functionName);
+            startLine--;
 
-            if (params.length > 0) {
-                var textToInsert = functionParser.getParameterText(params, returnText, functionName);
-                
-                vscode.window.activeTextEditor.edit(function (editBuilder) {
-                    if (startLine < 0) {
-                        startLine = 0;
-                        textToInsert = textToInsert + '\n';
+            vscode.window.activeTextEditor.edit(function (editBuilder) {
+                if (startLine < 0) {
+                    startLine = 0;
+                    textToInsert = textToInsert + '\n';
+                }
+
+                var lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
+                var pos;
+
+                if ((lastCharIndex > 0) && (startLine != 0)) {
+                    pos = new vscode.Position(startLine, lastCharIndex);
+                } else {
+                    pos = new vscode.Position(startLine, 0);
+                }
+
+                textToInsert = '\n' + textToInsert;
+
+                var line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
+                var firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;
+                var stringToIndent = '';
+                for (var i = 0; i < firstNonWhiteSpace; i++) {
+                    if (line.charAt(i) == '\t') {
+                        stringToIndent = stringToIndent + '\t';
+                    } else if (line.charAt(i) == ' ') {
+                        stringToIndent = stringToIndent + ' ';
                     }
-
-                    var lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
-                    var pos;
-
-                    if ((lastCharIndex > 0) && (startLine != 0)) {
-                        pos = new vscode.Position(startLine, lastCharIndex);
-                    } else {
-                        pos = new vscode.Position(startLine, 0);
-                    }
-
-                    textToInsert = '\n' + textToInsert;
-
-                    var line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
-                    var firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;
-                    var stringToIndent = '';
-                    for (var i = 0; i < firstNonWhiteSpace; i++) {
-                        if (line.charAt(i) == '\t') {
-                            stringToIndent = stringToIndent + '\t';
-                        } else if (line.charAt(i) == ' ') {
-                            stringToIndent = stringToIndent + ' ';
-                        }
-                    }
-                    textToInsert = indentString(textToInsert, stringToIndent, 1);
-                    editBuilder.insert(pos, textToInsert);
-                }).then(function () {
-                });
-            }
+                }
+                textToInsert = indentString(textToInsert, stringToIndent, 1);
+                editBuilder.insert(pos, textToInsert);
+            }).then(function () {
+            });
         }
     });
 
