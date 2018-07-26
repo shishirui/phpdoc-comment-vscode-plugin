@@ -43,8 +43,7 @@ function activate(context) {
                     if ((lastCharIndex > 0) && (startLine != 0)) {
                         pos = new vscode.Position(startLine, lastCharIndex);
                         textToInsert = '\n' + textToInsert;
-                    }
-                    else {
+                    } else {
                         pos = new vscode.Position(startLine, 0);
                     }
 
@@ -54,8 +53,7 @@ function activate(context) {
                     for (var i = 0; i < firstNonWhiteSpace; i++) {
                         if (line.charAt(i) == '\t') {
                             stringToIndent = stringToIndent + '\t';
-                        }
-                        else if (line.charAt(i) == ' ') {
+                        } else if (line.charAt(i) == ' ') {
                             stringToIndent = stringToIndent + ' ';
                         }
                     }

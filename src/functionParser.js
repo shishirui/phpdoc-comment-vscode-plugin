@@ -101,5 +101,4 @@ function getParameters(text) {
     }
     return paramList;
 }
-
 exports.getParameters = getParameters;
