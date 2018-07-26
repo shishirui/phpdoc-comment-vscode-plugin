@@ -6,7 +6,7 @@
     "publisher": "rexshi",
     "icon": "images/logo.png",
     "engines": {
-        "vscode": "^1.25.0"
+        "vscode": "^1.24.0"
     },
     "categories": [
         "Other"
@@ -25,7 +25,19 @@
                 "command": "extension.addComment",
                 "title": "Add PHPDoc Comment"
             }
-        ]
+        ],
+        "keybindings": [{
+            "command": "extension.addComment",
+            "key": "ctrl+shift+i",
+            "mac": "cmd+shift+i",
+            "when": "editorTextFocus"   
+        }],
+        "menus": {
+            "editor/context": [{
+                "command": "extension.addComment",
+                "when": "editorHasSelection"
+            }]
+        }
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
