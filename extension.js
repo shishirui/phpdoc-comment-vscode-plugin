@@ -8,8 +8,8 @@ function activate(context) {
 
         if (lang == "php") {
             var selection = vscode.window.activeTextEditor.selection;
-            var startLine = selection.start.line - 1;
-            var selectedText = vscode.window.activeTextEditor.document.getText(selection);
+            var startLine = selection.start.line;
+            var selectedText = vscode.window.activeTextEditor.document.lineAt(startLine).text;
             var outputMessage = 'Please select a PHP function signature';
 
             if (selectedText.length === 0) {
@@ -20,6 +20,8 @@ function activate(context) {
                 vscode.window.showInformationMessage(outputMessage);
                 return;
             }
+
+            startLine --;
 
             var fullLine = selectedText;
             var firstBraceIndex = selectedText.indexOf('(');
@@ -40,12 +42,14 @@ function activate(context) {
 
                     var lastCharIndex = vscode.window.activeTextEditor.document.lineAt(startLine).text.length;
                     var pos;
+
                     if ((lastCharIndex > 0) && (startLine != 0)) {
                         pos = new vscode.Position(startLine, lastCharIndex);
-                        textToInsert = '\n' + textToInsert;
                     } else {
                         pos = new vscode.Position(startLine, 0);
                     }
+
+                    textToInsert = '\n' + textToInsert;
 
                     var line = vscode.window.activeTextEditor.document.lineAt(selection.start.line).text;
                     var firstNonWhiteSpace = vscode.window.activeTextEditor.document.lineAt(selection.start.line).firstNonWhitespaceCharacterIndex;

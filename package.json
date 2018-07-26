@@ -35,7 +35,7 @@
         "menus": {
             "editor/context": [{
                 "command": "extension.addComment",
-                "when": "editorHasSelection"
+                "when": "resourceLangId == php"
             }]
         }
     },
