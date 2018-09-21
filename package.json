@@ -2,7 +2,7 @@
     "name": "phpdoc-comment-vscode-plugin",
     "displayName": "phpdoc-comment-vscode-plugin",
     "description": "Add phpdoc @param and @return tag for selected function signatures.",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "publisher": "rexshi",
     "icon": "images/logo.png",
     "engines": {
