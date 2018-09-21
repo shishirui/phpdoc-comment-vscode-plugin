@@ -6,5 +6,8 @@
         "lib": [
             "es6"
         ]
-    }
+    },
+	"exclude": [
+		"node_modules"
+	]
 }

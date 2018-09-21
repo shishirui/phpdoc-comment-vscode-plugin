@@ -2,7 +2,7 @@
     "name": "phpdoc-comment-vscode-plugin",
     "displayName": "phpdoc-comment-vscode-plugin",
     "description": "Add phpdoc @param and @return tag for selected function signatures.",
-    "version": "1.0.9",
+    "version": "1.1.0",
     "publisher": "rexshi",
     "icon": "images/logo.png",
     "engines": {
@@ -26,28 +26,34 @@
                 "title": "Add PHPDoc Comment"
             }
         ],
-        "keybindings": [{
-            "command": "extension.addPHPComment",
-            "key": "ctrl+shift+i",
-            "mac": "cmd+shift+i",
-            "when": "editorTextFocus"   
-        }],
-        "menus": {
-            "editor/context": [{
+        "keybindings": [
+            {
                 "command": "extension.addPHPComment",
-                "when": "resourceLangId == php"
-            }]
+                "key": "ctrl+shift+i",
+                "mac": "cmd+shift+i",
+                "when": "editorTextFocus"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "extension.addPHPComment",
+                    "when": "resourceLangId == php"
+                }
+            ]
         }
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "node ./node_modules/vscode/bin/test"
     },
+    "dependencies": {
+        "indent-string": "^2.1.0"
+    },
     "devDependencies": {
         "typescript": "^2.6.1",
         "vscode": "^1.1.6",
         "eslint": "^4.11.0",
-        "indent-string": "^2.1.0",
         "@types/node": "^7.0.43",
         "@types/mocha": "^2.2.42"
     }
