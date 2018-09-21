@@ -3,7 +3,7 @@ var functionParser = require('./src/functionParser');
 var indentString = require('indent-string');
 
 function activate(context) {
-    let disposable = vscode.commands.registerCommand('extension.addComment', function () {
+    let disposable = vscode.commands.registerCommand('extension.addPHPComment', function () {
         var lang = vscode.window.activeTextEditor.document.languageId;
 
         if (lang == "php") {

@@ -2,7 +2,7 @@
     "name": "phpdoc-comment-vscode-plugin",
     "displayName": "phpdoc-comment-vscode-plugin",
     "description": "Add phpdoc @param and @return tag for selected function signatures.",
-    "version": "1.0.5",
+    "version": "1.0.7",
     "publisher": "rexshi",
     "icon": "images/logo.png",
     "engines": {
@@ -16,25 +16,25 @@
         "url": "https://github.com/shishirui/phpdoc-comment-vscode-plugin"
     },
     "activationEvents": [
-        "onCommand:extension.addComment"
+        "onCommand:extension.addPHPComment"
     ],
     "main": "./extension",
     "contributes": {
         "commands": [
             {
-                "command": "extension.addComment",
+                "command": "extension.addPHPComment",
                 "title": "Add PHPDoc Comment"
             }
         ],
         "keybindings": [{
-            "command": "extension.addComment",
+            "command": "extension.addPHPComment",
             "key": "ctrl+shift+i",
             "mac": "cmd+shift+i",
             "when": "editorTextFocus"   
         }],
         "menus": {
             "editor/context": [{
-                "command": "extension.addComment",
+                "command": "extension.addPHPComment",
                 "when": "resourceLangId == php"
             }]
         }
