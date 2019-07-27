@@ -53,7 +53,7 @@ function getReturns(text) {
         //read to end of string
         var index = lastIndex + 1;
         var splicedText = text.slice(index, text.length);
-        returnText = splicedText.match(/[a-zA-Z][a-zA-Z0-9$_]*/).toString();
+        returnText = splicedText.match(/[a-zA-Z][a-zA-Z0-9$_\\]*/).toString();
     }
     return returnText;
 }
