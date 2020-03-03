@@ -1,33 +1,28 @@
 const vscode = require('vscode');
-var functionParser = require('./src/functionParser');
 var indentString = require('indent-string');
+var method = require('./src/method');
+var variable = require('./src/variable');
 
 function activate(context) {
     let disposable = vscode.commands.registerCommand('extension.addPHPComment', function () {
         var lang = vscode.window.activeTextEditor.document.languageId;
-
         if (lang == "php") {
             var selection = vscode.window.activeTextEditor.selection;
             var startLine = selection.start.line;
             var selectedText = vscode.window.activeTextEditor.document.lineAt(startLine).text;
-            var outputMessage = 'Please select a PHP function signature';
 
-            if (/function\s+([\w_-]+)/.exec(selectedText) == null) {
-                vscode.window.showInformationMessage(outputMessage);
+            var textToInsert = '';
+            if (/function\s+([\w_-]+)/.exec(selectedText) != null) {
+                textToInsert = method.comment(selectedText);
+            } else if (/(public|private|protected|var)\s+\$([\w_-]+)/.exec(selectedText) != null) {
+                textToInsert = variable.comment(selectedText);
+            } else {
+                vscode.window.showInformationMessage('Please select a PHP signature');
                 return;
             }
 
-            var fullLine = selectedText;
-            var firstBraceIndex = selectedText.indexOf('(');
-            selectedText = selectedText.slice(firstBraceIndex);
-            selectedText = functionParser.stripComments(selectedText);
-            var returnText = functionParser.getReturns(selectedText);
-            var params = functionParser.getParameters(selectedText);
-            var functionName = functionParser.getFunctionName(fullLine);
-            var textToInsert = functionParser.getParameterText(params, returnText, functionName);
-            startLine--;
-
             vscode.window.activeTextEditor.edit(function (editBuilder) {
+                startLine--;
                 if (startLine < 0) {
                     startLine = 0;
                     textToInsert = textToInsert + '\n';

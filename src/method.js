@@ -1,3 +1,5 @@
+var util = require('./util');
+
 var paramDeclaration = (function () {
     function paramDeclaration(paramName, paramType) {
         this.paramName = paramName;
@@ -7,17 +9,14 @@ var paramDeclaration = (function () {
     }
     return paramDeclaration;
 })();
-exports.paramDeclaration = paramDeclaration;
 
 function getFunctionName(text) {
     var matches = /function\s+([\w_-]+)/.exec(text);
     var functionName = matches[1];
-
     return functionName;
 }
-exports.getFunctionName = getFunctionName;
 
-function getParameterText(paramList, returnText, functionName) {
+function getComment(paramList, returnText, functionName) {
     var textToInsert = "";
     textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
 
@@ -41,7 +40,6 @@ function getParameterText(paramList, returnText, functionName) {
 
     return textToInsert;
 }
-exports.getParameterText = getParameterText;
 
 function getReturns(text) {
     var returnText = '';
@@ -57,36 +55,6 @@ function getReturns(text) {
     }
     return returnText;
 }
-exports.getReturns = getReturns;
-
-function stripComments(text) {
-    var uncommentedText = '';
-    var index = 0;
-    while (index != text.length) {
-        if ((text.charAt(index) == '/') && (text.charAt(index + 1) == '*')) {
-            //parse comment
-            if ((index + 2) != text.length) {
-                index = index + 2;
-                while ((text.charAt(index) != '*') && (text.charAt(index + 1) != '/')) {
-                    index++;
-                }
-            }
-            index = index + 2;
-        }
-        else if ((text.charAt(index) == '/') && (text.charAt(index + 1) == '/')) {
-            //read to end of line
-            while ((text.charAt(index) != '\n') && (index < text.length)) {
-                index++;
-            }
-        }
-        else {
-            uncommentedText = uncommentedText + text.charAt(index);
-            index++;
-        }
-    }
-    return uncommentedText;
-}
-exports.stripComments = stripComments;
 
 function getParameters(text) {
     var paramList = [];
@@ -104,4 +72,18 @@ function getParameters(text) {
     }
     return paramList;
 }
-exports.getParameters = getParameters;
+
+function comment(selectedText) {
+    var fullLine = selectedText;
+    var firstBraceIndex = selectedText.indexOf('(');
+    selectedText = selectedText.slice(firstBraceIndex);
+    selectedText = util.stripComments(selectedText);
+
+    var returnText = getReturns(selectedText);
+    var params = getParameters(selectedText);
+    var functionName = getFunctionName(fullLine);
+    var textToInsert = getComment(params, returnText, functionName);
+
+    return textToInsert;
+}
+exports.comment = comment;
