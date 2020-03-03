@@ -2,8 +2,8 @@ var util = require('./util');
 
 var paramDeclaration = (function () {
     /**
-     * @param {any} paramName
-     * @param {any} paramType
+     * @param {string} paramName
+     * @param {string} paramType
      */
     function paramDeclaration(paramName, paramType) {
         this.paramName = paramName;
@@ -32,10 +32,7 @@ function getComment(paramList, returnText, functionName) {
     var textToInsert = "";
     textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
 
-    paramList.forEach(/**
-         * @param {{ paramName: string; paramType: string; }} element
-         */
-function (element) {
+    paramList.forEach(function (element) {
         if (element.paramName != '') {
             textToInsert = textToInsert + ' @param  ';
             textToInsert = textToInsert + '' + element.paramType + '' + ' ';

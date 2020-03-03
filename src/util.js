@@ -1,5 +1,5 @@
 /**
- * @param {string | string[]} text
+ * @param {string} text
  */
 function stripComments(text) {
     var uncommentedText = '';
@@ -28,8 +28,7 @@ function stripComments(text) {
     }
     return uncommentedText;
 }
-const _stripComments = stripComments;
-export { _stripComments as stripComments };
+exports.stripComments = stripComments;
 
 /**
  * @param {string} value
@@ -47,5 +46,4 @@ function typeWithValue(value) {
         return 'array';
     }
 }
-const _typeWithValue = typeWithValue;
-export { _typeWithValue as typeWithValue };
+exports.typeWithValue = typeWithValue;

@@ -1,5 +1,8 @@
 var util = require('./util');
 
+/**
+ * @param {string} selectedText
+ */
 function comment(selectedText) {
     selectedText = util.stripComments(selectedText);
     var varName = getVarName(selectedText);
@@ -8,11 +11,17 @@ function comment(selectedText) {
 }
 exports.comment = comment;
 
+/**
+ * @param {string} selectedText
+ */
 function getVarName(selectedText) {
     var parts = /(public|private|protected|var)\s+\$([\w_-]+)/.exec(selectedText);
     return parts[2];
 }
 
+/**
+ * @param {string} selectedText
+ */
 function getType(selectedText) {
     var type = 'mixed';
     var parts = /=\s?(.+)/.exec(selectedText);
@@ -24,6 +33,10 @@ function getType(selectedText) {
     return type;
 }
 
+/**
+ * @param {string} paramName
+ * @param {string} type
+ */
 function getComment(paramName, type) {
     var textToInsert =  '/**\n * ' + paramName + '\n *\n *';
     textToInsert = textToInsert + ' @var ' + type;

@@ -3,6 +3,9 @@ var indentString = require('indent-string');
 var method = require('./src/method');
 var variable = require('./src/variable');
 
+/**
+ * @param {{ subscriptions: import("vscode").Disposable[]; }} context
+ */
 function activate(context) {
     let disposable = vscode.commands.registerCommand('extension.addPHPComment', function () {
         var lang = vscode.window.activeTextEditor.document.languageId;
