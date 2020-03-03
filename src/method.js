@@ -1,6 +1,10 @@
 var util = require('./util');
 
 var paramDeclaration = (function () {
+    /**
+     * @param {any} paramName
+     * @param {any} paramType
+     */
     function paramDeclaration(paramName, paramType) {
         this.paramName = paramName;
         this.paramType = paramType;
@@ -10,17 +14,28 @@ var paramDeclaration = (function () {
     return paramDeclaration;
 })();
 
+/**
+ * @param {string} text
+ */
 function getFunctionName(text) {
     var matches = /function\s+([\w_-]+)/.exec(text);
     var functionName = matches[1];
     return functionName;
 }
 
+/**
+ * @param {any[]} paramList
+ * @param {string} returnText
+ * @param {string} functionName
+ */
 function getComment(paramList, returnText, functionName) {
     var textToInsert = "";
     textToInsert = textToInsert + '/**\n * ' + functionName + '\n *\n *';
 
-    paramList.forEach(function (element) {
+    paramList.forEach(/**
+         * @param {{ paramName: string; paramType: string; }} element
+         */
+function (element) {
         if (element.paramName != '') {
             textToInsert = textToInsert + ' @param  ';
             textToInsert = textToInsert + '' + element.paramType + '' + ' ';
@@ -41,6 +56,9 @@ function getComment(paramList, returnText, functionName) {
     return textToInsert;
 }
 
+/**
+ * @param {string} text
+ */
 function getReturns(text) {
     var returnText = '';
     text = text.replace(/\s/g, '');
@@ -56,6 +74,9 @@ function getReturns(text) {
     return returnText;
 }
 
+/**
+ * @param {string} text
+ */
 function getParameters(text) {
     var paramList = [];
     text = text.replace(/\s/g, '');
@@ -73,6 +94,9 @@ function getParameters(text) {
     return paramList;
 }
 
+/**
+ * @param {string} selectedText
+ */
 function comment(selectedText) {
     var fullLine = selectedText;
     var firstBraceIndex = selectedText.indexOf('(');
