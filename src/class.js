@@ -10,7 +10,6 @@ function comment(selectedText) {
 }
 exports.comment = comment;
 
-
 /**
  * @param {string} selectedText
  */
