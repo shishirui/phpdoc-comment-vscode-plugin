@@ -1,7 +1,7 @@
 const vscode = require('vscode');
-var indentString = require('indent-string');
 var method = require('./src/method');
 var variable = require('./src/variable');
+var classx = require('./src/class');
 
 /**
  * @param {{ subscriptions: import("vscode").Disposable[]; }} context
@@ -19,6 +19,8 @@ function activate(context) {
                 textToInsert = method.comment(selectedText);
             } else if (/(public|private|protected|var)\s+\$([\w_-]+)/.exec(selectedText) != null) {
                 textToInsert = variable.comment(selectedText);
+            } else if (/(class)\s+([\w_-]+)/.exec(selectedText) != null) {
+                textToInsert = classx.comment(selectedText);
             } else {
                 vscode.window.showInformationMessage('Please select a PHP signature');
                 return;
@@ -52,7 +54,7 @@ function activate(context) {
                         stringToIndent = stringToIndent + ' ';
                     }
                 }
-                textToInsert = indentString(textToInsert, stringToIndent, 1);
+                textToInsert = textToInsert.replace(/^/gm, stringToIndent);
                 editBuilder.insert(pos, textToInsert);
             }).then(function () {
             });

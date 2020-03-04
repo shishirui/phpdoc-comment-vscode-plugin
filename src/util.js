@@ -37,11 +37,11 @@ function typeWithValue(value) {
     if (/^['"]/.exec(value) != null) {
         return 'string';
     } else if (/^\d+$/.exec(value) != null) {
-        return 'integer';
+        return 'int';
     } else if (/^\d+\.\d+$/.exec(value) != null) {
         return 'float';
     } else if (/^(true|false)$/i.exec(value) != null) {
-        return 'boolean';
+        return 'bool';
     } else if (/^(array\(|\[)/i.exec(value) != null) {
         return 'array';
     }

@@ -40,10 +40,6 @@ function getComment(paramList, returnText, functionName) {
         }
     });
 
-    if (paramList.length > 0) {
-        textToInsert = textToInsert + '\n *';
-    }
-
     if (returnText == '') {
         returnText = 'void';
     }
