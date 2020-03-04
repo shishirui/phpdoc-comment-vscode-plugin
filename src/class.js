@@ -23,7 +23,7 @@ function getClassName(selectedText) {
  * @param {string} paramName
  */
 function getComment(paramName) {
-    var textToInsert =  '/**\n * ' + paramName + '\n *\n *';
+    var textToInsert =  '/**\n * ' + paramName;
     textToInsert = textToInsert + '\n */';
 
     return textToInsert;
