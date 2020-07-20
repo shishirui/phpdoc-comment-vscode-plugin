@@ -72,16 +72,31 @@ function getReturns(text) {
  */
 function getParameters(text) {
     var paramList = [];
-    text = text.replace(/\s/g, '');
 
-    if (text.charAt(0) == '(') {            
+    if (text.charAt(0) === '(') {
         var keys = text.match(/\$[\w_-]+/g);
+        var i = 0;
         for (const key in keys) {
             if (keys.hasOwnProperty(key)) {
                 const name = keys[key];
-                var type = "mixed";
+                var clean = text
+                    .substring(1, text.indexOf(')'))
+                    .split(',')[i]
+                    .trim()
+                    .split(/\s/g)[0];
+                var type = '';
+                if (clean === 'string' || 
+                    clean === 'int'    || 
+                    clean === 'float'  ||
+                    clean === 'bool'   || 
+                    clean === 'array') {
+                        type += clean;
+                } else {
+                    type += 'mixed';
+                }
                 paramList.push(new paramDeclaration(name, type));
             }
+            i++;
         }
     }
     return paramList;
