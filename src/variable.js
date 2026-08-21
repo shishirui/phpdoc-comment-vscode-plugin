@@ -1,37 +1,16 @@
-var util = require('./util');
+var signature = require('./signature');
 
 /**
  * @param {string} selectedText
  */
 function comment(selectedText) {
-    selectedText = util.stripComments(selectedText);
-    var varName = getVarName(selectedText);
-    var type = getType(selectedText);
-    return getComment(varName, type);
+    var property = signature.parseProperty(selectedText);
+    if (property === null) {
+        return '';
+    }
+    return getComment(property.name, property.type);
 }
 exports.comment = comment;
-
-/**
- * @param {string} selectedText
- */
-function getVarName(selectedText) {
-    var parts = /(public|private|protected|var)\s+\$([\w_-]+)/.exec(selectedText);
-    return parts[2];
-}
-
-/**
- * @param {string} selectedText
- */
-function getType(selectedText) {
-    var type = 'mixed';
-    var parts = /=\s?(.+)/.exec(selectedText);
-    if (parts != null) {
-        var value = parts[1].replace(/[\r\n;,]$/, '');
-        type = util.typeWithValue(value);
-    }
-
-    return type;
-}
 
 /**
  * @param {string} paramName

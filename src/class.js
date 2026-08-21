@@ -14,8 +14,8 @@ exports.comment = comment;
  * @param {string} selectedText
  */
 function getClassName(selectedText) {
-    var parts = /(class)\s+([\w_-]+)/.exec(selectedText);
-    return parts[2];
+    var parts = /\b(?:class|interface|trait|enum)\s+(?!extends\b|implements\b)([a-zA-Z_][a-zA-Z0-9_]*)/i.exec(selectedText);
+    return parts === null ? '' : parts[1];
 }
 
 /**

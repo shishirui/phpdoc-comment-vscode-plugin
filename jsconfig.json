@@ -3,11 +3,21 @@
         "module": "commonjs",
         "target": "es6",
         "checkJs": true,  /* Typecheck .js files. */
+        "maxNodeModuleJsDepth": 0,
+        "noEmit": true,
+        "types": [
+            "node",
+            "vscode"
+        ],
         "lib": [
             "es6"
         ]
     },
-	"exclude": [
-		"node_modules"
-	]
+    "include": [
+        "extension.js",
+        "src/**/*.js"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }
