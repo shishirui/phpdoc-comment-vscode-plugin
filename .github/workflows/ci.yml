@@ -30,8 +30,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Type-check JavaScript
+        run: npm run check
+
       - name: Run unit tests
         run: npm test
+
+      - name: Run VS Code integration tests
+        run: xvfb-run -a npm run test:integration
 
       - name: Audit dependencies
         run: npm audit --audit-level=high

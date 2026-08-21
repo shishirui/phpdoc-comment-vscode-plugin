@@ -1,27 +1,4 @@
-var util = require('./util');
-
-var paramDeclaration = (function () {
-    /**
-     * @param {string} paramName
-     * @param {string} paramType
-     */
-    function paramDeclaration(paramName, paramType) {
-        this.paramName = paramName;
-        this.paramType = paramType;
-        this.paramName = paramName;
-        this.paramType = paramType;
-    }
-    return paramDeclaration;
-})();
-
-/**
- * @param {string} text
- */
-function getFunctionName(text) {
-    var matches = /function\s+([\w_-]+)/.exec(text);
-    var functionName = matches[1];
-    return functionName;
-}
+var signature = require('./signature');
 
 /**
  * @param {any[]} paramList
@@ -52,70 +29,15 @@ function getComment(paramList, returnText, functionName) {
 /**
  * @param {string} text
  */
-function getReturns(text) {
-    var returnText = '';
-    text = text.replace(/\s/g, '');
-    var lastIndex = text.lastIndexOf(':');
-    var lastBrace = text.lastIndexOf(')');
-    if (lastIndex > lastBrace) {
-        //we have a return type
-        //read to end of string
-        var index = lastIndex + 1;
-        var splicedText = text.slice(index, text.length);
-        returnText = splicedText.match(/[a-zA-Z][a-zA-Z0-9$_\\]*/).toString();
-    }
-    return returnText;
-}
-
-/**
- * @param {string} text
- */
-function getParameters(text) {
-    var paramList = [];
-
-    if (text.charAt(0) === '(') {
-        var keys = text.match(/\$[\w_-]+/g);
-        var i = 0;
-        for (const key in keys) {
-            if (keys.hasOwnProperty(key)) {
-                const name = keys[key];
-                var clean = text
-                    .substring(1, text.indexOf(')'))
-                    .split(',')[i]
-                    .trim()
-                    .split(/\s/g)[0];
-                var type = '';
-                if (clean === 'string' || 
-                    clean === 'int'    || 
-                    clean === 'float'  ||
-                    clean === 'bool'   || 
-                    clean === 'array') {
-                        type += clean;
-                } else {
-                    type += 'mixed';
-                }
-                paramList.push(new paramDeclaration(name, type));
-            }
-            i++;
-        }
-    }
-    return paramList;
-}
-
 /**
  * @param {string} selectedText
  */
 function comment(selectedText) {
-    var fullLine = selectedText;
-    var firstBraceIndex = selectedText.indexOf('(');
-    selectedText = selectedText.slice(firstBraceIndex);
-    selectedText = util.stripComments(selectedText);
+    var parsedFunction = signature.parseFunction(selectedText);
+    if (parsedFunction === null) {
+        return '';
+    }
 
-    var returnText = getReturns(selectedText);
-    var params = getParameters(selectedText);
-    var functionName = getFunctionName(fullLine);
-    var textToInsert = getComment(params, returnText, functionName);
-
-    return textToInsert;
+    return getComment(parsedFunction.parameters, parsedFunction.returnType, parsedFunction.name);
 }
 exports.comment = comment;
