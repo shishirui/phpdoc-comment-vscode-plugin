@@ -45,7 +45,8 @@
     },
     "scripts": {
         "lint": "eslint .",
-        "test": "node ./test/runTest.js"
+        "test": "node --test ./test/unit/*.test.js",
+        "test:integration": "node ./test/runTest.js"
     },
     "devDependencies": {
         "@types/node": "^25.9.1",

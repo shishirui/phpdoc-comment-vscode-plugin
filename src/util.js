@@ -4,22 +4,23 @@
 function stripComments(text) {
     var uncommentedText = '';
     var index = 0;
-    while (index != text.length) {
+    while (index < text.length) {
         if ((text.charAt(index) == '/') && (text.charAt(index + 1) == '*')) {
-            //parse comment
-            if ((index + 2) != text.length) {
-                index = index + 2;
-                while ((text.charAt(index) != '*') && (text.charAt(index + 1) != '/')) {
-                    index++;
-                }
+            var commentEnd = text.indexOf('*/', index + 2);
+            if (commentEnd == -1) {
+                break;
             }
-            index = index + 2;
+
+            index = commentEnd + 2;
         }
         else if ((text.charAt(index) == '/') && (text.charAt(index + 1) == '/')) {
             //read to end of line
-            while ((text.charAt(index) != '\n') && (index < text.length)) {
-                index++;
+            var lineEnd = text.indexOf('\n', index + 2);
+            if (lineEnd == -1) {
+                break;
             }
+
+            index = lineEnd;
         }
         else {
             uncommentedText = uncommentedText + text.charAt(index);
