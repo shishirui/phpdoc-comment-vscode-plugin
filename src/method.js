@@ -1,7 +1,7 @@
 var signature = require('./signature');
 
 /**
- * @param {any[]} paramList
+ * @param {{ paramName: string; paramType: string }[]} paramList
  * @param {string} returnText
  * @param {string} functionName
  */
@@ -11,7 +11,7 @@ function getComment(paramList, returnText, functionName) {
 
     paramList.forEach(function (element) {
         if (element.paramName != '') {
-            textToInsert = textToInsert + ' @param  ';
+                textToInsert = textToInsert + ' @param ';
             textToInsert = textToInsert + '' + element.paramType + '' + ' ';
             textToInsert = textToInsert + element.paramName + '\n' + ' *';
         }
@@ -26,9 +26,6 @@ function getComment(paramList, returnText, functionName) {
     return textToInsert;
 }
 
-/**
- * @param {string} text
- */
 /**
  * @param {string} selectedText
  */

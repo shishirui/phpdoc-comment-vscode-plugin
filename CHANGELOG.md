@@ -2,6 +2,20 @@
 
 All notable changes to PHPDoc Comment will be documented in this file.
 
+## 1.4.1 - Unreleased
+
+### Fixed
+
+- Avoid inserting a second PHPDoc block when one already exists.
+- Insert PHPDoc before PHP attributes when the cursor is on the declaration line.
+- Preserve the document's LF or CRLF line endings.
+- Use conventional single-spacing in generated `@param` tags.
+
+### Added
+
+- Add Marketplace keywords, license, homepage, issue tracker, and additional categories.
+- Add a security policy and scheduled dependency update configuration.
+
 ## 1.4.0 - 2026-08-21
 
 ### Added
