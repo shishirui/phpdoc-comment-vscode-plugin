@@ -34,8 +34,8 @@ suite('Extension Tests', function () {
             '    /**',
             '     * find',
             '     *',
-            '     * @param  ?string $id',
-            '     * @param  array $options',
+            '     * @param ?string $id',
+            '     * @param array $options',
             '     * @return Result|false',
             '     */',
             '    public function find(',
@@ -59,5 +59,59 @@ suite('Extension Tests', function () {
             '     */',
             source
         ].join('\n'));
+    });
+
+    test('does not duplicate an existing PHPDoc block before attributes', async function () {
+        const source = [
+            'class Example {',
+            '    /**',
+            '     * Existing documentation.',
+            '     */',
+            '    #[RequiresAuth]',
+            '    public function handle(): void {}',
+            '}'
+        ].join('\n');
+
+        assert.equal(await runCommand(source, 5), source);
+    });
+
+    test('inserts documentation before a multiline attribute block', async function () {
+        const source = [
+            '    #[Route(',
+            '        methods: ["GET", "POST"],',
+            '    )]',
+            '    public function handle(): void {}'
+        ].join('\n');
+
+        const actual = await runCommand(source, 3);
+        assert.equal(actual, [
+            '    /**',
+            '     * handle',
+            '     *',
+            '     * @return void',
+            '     */',
+            source
+        ].join('\n'));
+    });
+
+    test('preserves CRLF line endings', async function () {
+        const source = [
+            'class Example {',
+            '    public function handle(string $value): void {}',
+            '}'
+        ].join('\r\n');
+
+        const actual = await runCommand(source, 1);
+        assert.equal(actual, [
+            'class Example {',
+            '    /**',
+            '     * handle',
+            '     *',
+            '     * @param string $value',
+            '     * @return void',
+            '     */',
+            '    public function handle(string $value): void {}',
+            '}'
+        ].join('\r\n'));
     });
 });

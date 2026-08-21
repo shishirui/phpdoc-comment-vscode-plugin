@@ -2,6 +2,7 @@ const vscode = require('vscode');
 var method = require('./src/method');
 var variable = require('./src/variable');
 var classx = require('./src/class');
+var editorUtil = require('./src/editor');
 var signature = require('./src/signature');
 
 /**
@@ -39,13 +40,21 @@ function activate(context) {
             return;
         }
 
-        var sourceLine = editor.document.lineAt(startLine);
+        var insertionLine = editorUtil.findInsertionLine(editor.document, startLine);
+        if (editorUtil.hasLeadingDocBlock(editor.document, insertionLine)) {
+            vscode.window.showInformationMessage('A PHPDoc comment already exists for this declaration');
+            return;
+        }
+
+        var sourceLine = editor.document.lineAt(insertionLine);
         var indentation = sourceLine.text.slice(0, sourceLine.firstNonWhitespaceCharacterIndex);
         textToInsert = textToInsert.replace(/^/gm, indentation) + '\n';
+        var lineEnding = editor.document.eol === vscode.EndOfLine.CRLF ? '\r\n' : '\n';
+        textToInsert = textToInsert.replace(/\n/g, lineEnding);
 
         try {
             var editApplied = await editor.edit(function (editBuilder) {
-                editBuilder.insert(new vscode.Position(startLine, 0), textToInsert);
+                editBuilder.insert(new vscode.Position(insertionLine, 0), textToInsert);
             });
             if (!editApplied) {
                 vscode.window.showErrorMessage('Unable to add the PHPDoc comment');

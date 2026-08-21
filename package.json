@@ -2,13 +2,27 @@
     "name": "phpdoc-comment-vscode-plugin",
     "displayName": "PHPDoc Comment",
     "description": "Generate PHPDoc blocks for modern PHP functions, properties, classes, interfaces, traits, and enums.",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "publisher": "rexshi",
+    "license": "MIT",
+    "homepage": "https://github.com/shishirui/phpdoc-comment-vscode-plugin#readme",
+    "bugs": {
+        "url": "https://github.com/shishirui/phpdoc-comment-vscode-plugin/issues"
+    },
+    "keywords": [
+        "php",
+        "phpdoc",
+        "docblock",
+        "documentation",
+        "annotations"
+    ],
     "icon": "images/logo.png",
     "engines": {
         "vscode": "^1.24.0"
     },
     "categories": [
+        "Programming Languages",
+        "Snippets",
         "Other"
     ],
     "repository": {
