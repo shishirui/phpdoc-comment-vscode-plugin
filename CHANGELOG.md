@@ -2,7 +2,7 @@
 
 All notable changes to PHPDoc Comment will be documented in this file.
 
-## 1.4.1 - Unreleased
+## 1.4.1 - 2026-08-21
 
 ### Fixed
 
