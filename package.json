@@ -2,7 +2,7 @@
     "name": "phpdoc-comment-vscode-plugin",
     "displayName": "PHPDoc Comment",
     "description": "Add phpdoc @param and @return tag for selected function signatures.",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "publisher": "rexshi",
     "icon": "images/logo.png",
     "engines": {
@@ -45,8 +45,11 @@
     },
     "scripts": {
         "lint": "eslint .",
+        "package": "npx --yes @vscode/vsce@3.9.2 package",
+        "package:list": "npx --yes @vscode/vsce@3.9.2 ls",
         "test": "node --test ./test/unit/*.test.js",
-        "test:integration": "node ./test/runTest.js"
+        "test:integration": "node ./test/runTest.js",
+        "vscode:prepublish": "npm run lint && npm test"
     },
     "devDependencies": {
         "@types/node": "^25.9.1",
